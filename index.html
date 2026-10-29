@@ -60,6 +60,29 @@
             outline: 2px solid rgba(139, 38, 29, 0.25);
             outline-offset: 2px;
         }
+        .speech-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.65rem 0.9rem;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #8B261D 0%, #A33A2C 100%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 6px 14px rgba(139, 38, 29, 0.18);
+        }
+        .speech-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(139, 38, 29, 0.22);
+        }
+        .speech-btn:active {
+            transform: translateY(0);
+        }
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -227,57 +250,75 @@
                 title: "Palazzo Pitti e Giardino di Boboli",
                 category: "Palazzi & Giardini",
                 description: "Costruito originariamente per il banchiere Luca Pitti nel 1458, il palazzo fu acquistato dai Medici nel 1549, diventando la residenza principale dei Granduchi di Toscana.",
-                audio: "audio/palazzo-pitti.mp3"
+                audio: ""
             },
             {
                 title: "Forte di Belvedere e Giardino Bardini",
                 category: "Punti Panoramici",
                 description: "Progettato alla fine del '500 dal Buontalenti per volere del Granduca Ferdinando I, il Forte serviva a proteggere la città e dimostrare la potenza medicea.",
-                audio: "audio/forte-belvedere.mp3"
+                audio: ""
             },
             {
                 title: "Abbazia di San Miniato al Monte",
                 category: "Chiese & Architettura",
                 description: "Costruita tra l'XI e il XIII secolo, è una delle vette dell'architettura romanica fiorentina, dedicata al martire della città, San Miniato.",
-                audio: "audio/san-miniato.mp3"
+                audio: ""
             },
             {
                 title: "Galleria dell'Accademia",
                 category: "Arte & Musei",
                 description: "Fondata nel 1784, ospita dal 1873 il monumentale David di Michelangelo, trasferito da Piazza della Signoria.",
-                audio: "audio/galleria-accademia.mp3"
+                audio: ""
             },
             {
                 title: "Cattedrale di Santa Maria del Fiore & Cupola",
                 category: "Chiese & Architettura",
                 description: "Iniziata nel 1296 da Arnolfo di Cambio, la cattedrale venne completata nel 1436 con la Cupola autoportante di Filippo Brunelleschi.",
-                audio: "audio/santa-maria-del-fiore.mp3"
+                audio: ""
             },
             {
                 title: "Galleria degli Uffizi",
                 category: "Arte & Musei",
                 description: "Progettato nel 1560 da Giorgio Vasari come sede degli uffici amministrativi dello Stato mediceo, divenne in seguito una straordinaria galleria d'arte.",
-                audio: "audio/uffizi.mp3"
+                audio: ""
             },
             {
                 title: "Piazza della Signoria & Palazzo Vecchio",
                 category: "Piazze & Palazzi",
                 description: "Costruito a partire dal 1299 come sede del Governo della Repubblica Fiorentina, Palazzo Vecchio e la sua piazza rappresentano il cuore politico della città.",
-                audio: "audio/palazzo-vecchio.mp3"
+                audio: ""
             },
             {
                 title: "Ponte Vecchio",
                 category: "Punti Iconici",
                 description: "È il ponte in pietra più antico di Firenze, ricostruito nel 1345. Scampato alla Seconda Guerra Mondiale, ospita botteghe d'orefici.",
-                audio: "audio/ponte-vecchio.mp3"
+                audio: ""
             },
             {
                 title: "Basilica di Santa Croce",
                 category: "Chiese & Architettura",
                 description: "Fondata nel XIII secolo dai Francescani, è il mausoleo dei grandi d'Italia, custodendo tombe di Michelangelo, Galileo e Machiavelli.",
-                audio: "audio/santa-croce.mp3"
+                audio: ""
             }
         ];
+
+        function speakMonument(title, description) {
+            const synth = window.speechSynthesis;
+            if (!synth) {
+                alert('Il browser non supporta la sintesi vocale.');
+                return;
+            }
+
+            synth.cancel();
+
+            const text = `${title}. ${description}`;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'it-IT';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.0;
+            utterance.volume = 1;
+            synth.speak(utterance);
+        }
 
         function renderItinerary(filterDay = 'all') {
             const container = document.getElementById('itinerary-cards-container');
@@ -335,15 +376,27 @@
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all";
 
-                const audioHtml = h.audio ? `
-                    <div class="audio-wrapper">
-                        <div class="audio-label">🎧 Guida audio</div>
-                        <audio class="custom-audio-player" controls preload="none">
-                            <source src="${h.audio}" type="audio/mpeg">
-                            Il tuo browser non supporta l'elemento audio.
-                        </audio>
-                    </div>
-                ` : '';
+                const safeTitle = h.title.replace(/'/g, "\\'");
+                const safeDescription = h.description.replace(/'/g, "\\'");
+
+                const audioHtml = h.audio
+                    ? `
+                        <div class="audio-wrapper">
+                            <div class="audio-label">🎧 Guida audio</div>
+                            <audio class="custom-audio-player" controls preload="none">
+                                <source src="${h.audio}" type="audio/mpeg">
+                                Il tuo browser non supporta l'elemento audio.
+                            </audio>
+                        </div>
+                    `
+                    : `
+                        <div class="audio-wrapper">
+                            <div class="audio-label">🎧 Guida audio</div>
+                            <button class="speech-btn" type="button" onclick="speakMonument('${safeTitle}', '${safeDescription}')">
+                                🔊 Ascolta la descrizione
+                            </button>
+                        </div>
+                    `;
 
                 card.innerHTML = `
                     <div>
