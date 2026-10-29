@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firenze: Programma di Viaggio e Guida Storica</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -33,7 +31,35 @@
             color: #8B261D;
             font-weight: 600;
         }
-        /* Custom scrollbar */
+        .audio-wrapper {
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e7ddd1;
+        }
+        .audio-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #8B261D;
+            margin-bottom: 0.5rem;
+        }
+        .custom-audio-player {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #fffaf5 0%, #f8f3ee 100%);
+            border: 1px solid #eadfce;
+            padding: 0.35rem 0.5rem;
+            box-shadow: 0 4px 12px rgba(43, 27, 22, 0.05);
+        }
+        .custom-audio-player::-webkit-media-controls-panel {
+            background: transparent;
+        }
+        .custom-audio-player:focus {
+            outline: 2px solid rgba(139, 38, 29, 0.25);
+            outline-offset: 2px;
+        }
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -51,7 +77,6 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Top Navigation / Header -->
     <header class="bg-white border-b border-stone-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
@@ -61,8 +86,7 @@
                     <p class="text-xs text-stone-500 uppercase tracking-wider font-semibold">5 - 8 Dicembre • 4 Giorni</p>
                 </div>
             </div>
-            
-            <!-- Quick Export & Action Buttons -->
+
             <div class="flex items-center space-x-3 w-full md:w-auto">
                 <button onclick="window.print()" class="flex-1 md:flex-none px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
                     <span>🖨️</span> Stampa / Salva PDF
@@ -74,10 +98,7 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full space-y-10">
-
-        <!-- Intro Section -->
         <section class="bg-amber-900/5 border border-amber-900/10 rounded-2xl p-6 md:p-8">
             <h2 class="text-xl font-bold text-amber-950 mb-2">Benvenuto nel tuo programma interattivo</h2>
             <p class="text-stone-700 leading-relaxed text-sm md:text-base">
@@ -85,65 +106,38 @@
             </p>
         </section>
 
-        <!-- Navigation Tabs -->
         <div class="border-b border-stone-200">
             <nav class="flex space-x-8" aria-label="Tabs">
-                <button onclick="switchTab('itinerary')" id="tab-itinerary" class="py-3 px-1 text-base font-medium active-tab focus:outline-none">
-                    📅 Programma per Giorni
-                </button>
-                <button onclick="switchTab('history')" id="tab-history" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">
-                    🏛️ Guida Storica Monumenti
-                </button>
-                <button onclick="switchTab('analytics')" id="tab-analytics" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">
-                    📊 Panoramica & Statistiche
-                </button>
+                <button onclick="switchTab('itinerary')" id="tab-itinerary" class="py-3 px-1 text-base font-medium active-tab focus:outline-none">📅 Programma per Giorni</button>
+                <button onclick="switchTab('history')" id="tab-history" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">🏛️ Guida Storica Monumenti</button>
+                <button onclick="switchTab('analytics')" id="tab-analytics" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">📊 Panoramica & Statistiche</button>
             </nav>
         </div>
 
-        <!-- TAB 1: ITINERARIO GIORNO PER GIORNO -->
         <section id="section-itinerary" class="space-y-6">
             <div class="flex flex-wrap gap-2">
-                <button onclick="filterDay('all')" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-900 text-white shadow-sm" data-day="all">
-                    Tutti i Giorni
-                </button>
-                <button onclick="filterDay(1)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="1">
-                    Giorno 1 (5 Dic)
-                </button>
-                <button onclick="filterDay(2)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="2">
-                    Giorno 2 (6 Dic)
-                </button>
-                <button onclick="filterDay(3)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="3">
-                    Giorno 3 (7 Dic)
-                </button>
-                <button onclick="filterDay(4)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="4">
-                    Giorno 4 (8 Dic)
-                </button>
+                <button onclick="filterDay('all')" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-900 text-white shadow-sm" data-day="all">Tutti i Giorni</button>
+                <button onclick="filterDay(1)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="1">Giorno 1 (5 Dic)</button>
+                <button onclick="filterDay(2)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="2">Giorno 2 (6 Dic)</button>
+                <button onclick="filterDay(3)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="3">Giorno 3 (7 Dic)</button>
+                <button onclick="filterDay(4)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="4">Giorno 4 (8 Dic)</button>
             </div>
 
-            <!-- Days Container -->
-            <div id="itinerary-cards-container" class="grid gap-6 md:grid-cols-2">
-                <!-- Cards inject dynamically via JS -->
-            </div>
+            <div id="itinerary-cards-container" class="grid gap-6 md:grid-cols-2"></div>
         </section>
 
-        <!-- TAB 2: GUIDA STORICA -->
         <section id="section-history" class="hidden space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
                 <div class="relative w-full md:w-96">
                     <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900/20">
                     <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
                 </div>
-                <div class="text-xs text-stone-500">
-                    Mostrati: <span id="history-count" class="font-bold text-stone-800">9</span> monumenti
-                </div>
+                <div class="text-xs text-stone-500">Mostrati: <span id="history-count" class="font-bold text-stone-800">9</span> monumenti</div>
             </div>
 
-            <div id="history-cards-container" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <!-- History cards injected dynamically via JS -->
-            </div>
+            <div id="history-cards-container" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
         </section>
 
-        <!-- TAB 3: ANALYTICS & BREAKDOWN -->
         <section id="section-analytics" class="hidden space-y-8">
             <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
                 <h3 class="text-lg font-bold text-stone-900 mb-2">Ripartizione delle Visite per Categoria</h3>
@@ -153,19 +147,15 @@
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- Footer -->
     <footer class="bg-stone-100 border-t border-stone-200 mt-12 py-6">
         <div class="max-w-6xl mx-auto px-4 text-center text-xs text-stone-500">
             <p>Itinerario di Viaggio • Firenze 2026 • Generato per la massima funzionalità in lettura e consultazione offline.</p>
         </div>
     </footer>
 
-    <!-- JavaScript Logic -->
     <script>
-        // --- Data Sources ---
         const daysData = [
             {
                 day: 1,
@@ -289,19 +279,16 @@
             }
         ];
 
-        // --- Render Functions ---
         function renderItinerary(filterDay = 'all') {
             const container = document.getElementById('itinerary-cards-container');
             container.innerHTML = '';
 
-            const filteredDays = filterDay === 'all' 
-                ? daysData 
-                : daysData.filter(d => d.day === parseInt(filterDay));
+            const filteredDays = filterDay === 'all' ? daysData : daysData.filter(d => d.day === parseInt(filterDay));
 
             filteredDays.forEach(day => {
                 const card = document.createElement('div');
                 card.className = "bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4 hover:border-amber-900/30 transition-all";
-                
+
                 let plusHtml = '';
                 if (day.plus && day.plus.length > 0) {
                     plusHtml = `
@@ -322,7 +309,6 @@
                         </div>
                         <h3 class="text-lg font-bold text-stone-900">${day.title}</h3>
                         <p class="text-xs text-stone-500 italic mb-4">${day.subtitle}</p>
-                        
                         <ul class="text-sm text-stone-700 space-y-2 pl-4 list-disc">
                             ${day.items.map(item => `<li>${item}</li>`).join('')}
                         </ul>
@@ -337,8 +323,8 @@
             const container = document.getElementById('history-cards-container');
             container.innerHTML = '';
 
-            const filtered = historyData.filter(h => 
-                h.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+            const filtered = historyData.filter(h =>
+                h.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 h.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 h.category.toLowerCase().includes(searchTerm.toLowerCase())
             );
@@ -349,17 +335,15 @@
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all";
 
-                const audioHtml = h.audio
-                    ? `
-                        <div class="mt-4 pt-3 border-t border-stone-200">
-                            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-800 mb-2">🎧 Guida audio</div>
-                            <audio controls preload="none" class="w-full">
-                                <source src="${h.audio}" type="audio/mpeg">
-                                Il tuo browser non supporta l'elemento audio.
-                            </audio>
-                        </div>
-                    `
-                    : '';
+                const audioHtml = h.audio ? `
+                    <div class="audio-wrapper">
+                        <div class="audio-label">🎧 Guida audio</div>
+                        <audio class="custom-audio-player" controls preload="none">
+                            <source src="${h.audio}" type="audio/mpeg">
+                            Il tuo browser non supporta l'elemento audio.
+                        </audio>
+                    </div>
+                ` : '';
 
                 card.innerHTML = `
                     <div>
@@ -373,7 +357,6 @@
             });
         }
 
-        // --- Tab Switching Logic ---
         function switchTab(tab) {
             document.getElementById('section-itinerary').classList.add('hidden');
             document.getElementById('section-history').classList.add('hidden');
@@ -396,7 +379,6 @@
             }
         }
 
-        // --- Day Filter ---
         function filterDay(day) {
             document.querySelectorAll('.day-btn').forEach(btn => {
                 btn.className = "day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200";
@@ -410,7 +392,6 @@
             renderHistory(val);
         }
 
-        // --- Chart.js Analytics ---
         let chartInitialized = false;
         function initChart() {
             if (chartInitialized) return;
@@ -423,12 +404,7 @@
                     labels: ['Arte & Musei', 'Chiese & Architettura', 'Palazzi & Giardini', 'Punti Panoramici & Iconici'],
                     datasets: [{
                         data: [4, 4, 3, 3],
-                        backgroundColor: [
-                            '#8B261D',
-                            '#D4A373',
-                            '#2A9D8F',
-                            '#E76F51'
-                        ],
+                        backgroundColor: ['#8B261D', '#D4A373', '#2A9D8F', '#E76F51'],
                         borderWidth: 2,
                         borderColor: '#ffffff'
                     }]
@@ -449,7 +425,6 @@
             });
         }
 
-        // --- Markdown File Download ---
         function downloadMarkdown() {
             const markdownContent = `# 🗺️ Programma di Viaggio: Firenze
 
@@ -478,7 +453,6 @@
             URL.revokeObjectURL(url);
         }
 
-        // Initial Initialization
         renderItinerary();
         renderHistory();
     </script>
