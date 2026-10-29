@@ -64,10 +64,10 @@
             
             <!-- Quick Export & Action Buttons -->
             <div class="flex items-center space-x-3 w-full md:w-auto">
-                <button onclick="window.print()" class="flex-1 md:flex-none px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 border border-stone-300">
+                <button onclick="window.print()" class="flex-1 md:flex-none px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
                     <span>🖨️</span> Stampa / Salva PDF
                 </button>
-                <button onclick="downloadMarkdown()" class="flex-1 md:flex-none px-4 py-2 bg-amber-900 hover:bg-amber-950 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
+                <button onclick="downloadMarkdown()" class="flex-1 md:flex-none px-4 py-2 bg-amber-900 hover:bg-amber-950 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
                     <span>📥</span> Scarica Testo (.md)
                 </button>
             </div>
@@ -81,7 +81,7 @@
         <section class="bg-amber-900/5 border border-amber-900/10 rounded-2xl p-6 md:p-8">
             <h2 class="text-xl font-bold text-amber-950 mb-2">Benvenuto nel tuo programma interattivo</h2>
             <p class="text-stone-700 leading-relaxed text-sm md:text-base">
-                Esplora l'itinerario giorno per giorno, scopri la storia e le curisità di ciascun monumento che visiterai, ed esporta il tuo programma in formato PDF o testo per averlo sempre con te durante il viaggio a Firenze.
+                Esplora l'itinerario giorno per giorno, scopri la storia e le curiosità di ciascun monumento che visiterai, ed esporta il tuo programma in formato PDF o testo per averlo sempre con te.
             </p>
         </section>
 
@@ -130,7 +130,7 @@
         <section id="section-history" class="hidden space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
                 <div class="relative w-full md:w-96">
-                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900">
+                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900/20">
                     <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
                 </div>
                 <div class="text-xs text-stone-500">
@@ -236,47 +236,56 @@
             {
                 title: "Palazzo Pitti e Giardino di Boboli",
                 category: "Palazzi & Giardini",
-                description: "Costruito originariamente per il banchiere Luca Pitti nel 1458, il palazzo fu acquistato dai Medici nel 1549, diventando la residenza principale dei Granduchi di Toscana. Il Giardino di Boboli è uno dei più celebri esempi di giardino all'italiana al mondo."
+                description: "Costruito originariamente per il banchiere Luca Pitti nel 1458, il palazzo fu acquistato dai Medici nel 1549, diventando la residenza principale dei Granduchi di Toscana.",
+                audio: "audio/palazzo-pitti.mp3"
             },
             {
                 title: "Forte di Belvedere e Giardino Bardini",
                 category: "Punti Panoramici",
-                description: "Progettato alla fine del '500 dal Buontalenti per volere del Granduca Ferdinando I, il Forte serviva a proteggere la città e dimostrare la potenza medicea. Il vicino Giardino Bardini ne completa l'offerta con celebri scalinate e scorci unici."
+                description: "Progettato alla fine del '500 dal Buontalenti per volere del Granduca Ferdinando I, il Forte serviva a proteggere la città e dimostrare la potenza medicea.",
+                audio: "audio/forte-belvedere.mp3"
             },
             {
                 title: "Abbazia di San Miniato al Monte",
                 category: "Chiese & Architettura",
-                description: "Costruita tra l'XI e il XIII secolo, è una delle vette dell'architettura romanica fiorentina, dedicata al primo martire della città, San Miniato. Offre uno dei panorami più spettacolari su Firenze."
+                description: "Costruita tra l'XI e il XIII secolo, è una delle vette dell'architettura romanica fiorentina, dedicata al martire della città, San Miniato.",
+                audio: "audio/san-miniato.mp3"
             },
             {
                 title: "Galleria dell'Accademia",
                 category: "Arte & Musei",
-                description: "Fondata nel 1784 da Pietro Leopoldo di Lorena come luogo di studio per gli studenti d'arte, ospita dal 1873 il David originale di Michelangelo, trasferito da Piazza della Signoria per proteggerlo dalle intemperie."
+                description: "Fondata nel 1784, ospita dal 1873 il monumentale David di Michelangelo, trasferito da Piazza della Signoria.",
+                audio: "audio/galleria-accademia.mp3"
             },
             {
                 title: "Cattedrale di Santa Maria del Fiore & Cupola",
                 category: "Chiese & Architettura",
-                description: "Iniziata nel 1296 da Arnolfo di Cambio, la cattedrale venne completata nel 1436 con la costruzione della monumentale Cupola autoportante di Filippo Brunelleschi, un'impresa ingegneristica rivoluzionaria."
+                description: "Iniziata nel 1296 da Arnolfo di Cambio, la cattedrale venne completata nel 1436 con la Cupola autoportante di Filippo Brunelleschi.",
+                audio: "audio/santa-maria-del-fiore.mp3"
             },
             {
                 title: "Galleria degli Uffizi",
                 category: "Arte & Musei",
-                description: "Progettato nel 1560 da Giorgio Vasari come sede degli 'uffici' amministrativi dello Stato mediceo, il complesso fu trasformato dai Medici in una straordinaria galleria d'arte privata, celebre in tutto il mondo."
+                description: "Progettato nel 1560 da Giorgio Vasari come sede degli uffici amministrativi dello Stato mediceo, divenne in seguito una straordinaria galleria d'arte.",
+                audio: "audio/uffizi.mp3"
             },
             {
                 title: "Piazza della Signoria & Palazzo Vecchio",
                 category: "Piazze & Palazzi",
-                description: "Costruito a partire dal 1299 come sede del Governo della Repubblica Fiorentina, Palazzo Vecchio e la sua piazza rappresentano il cuore politico della città, custodi di secoli di storia e di capolavori come il Perseo del Cellini."
+                description: "Costruito a partire dal 1299 come sede del Governo della Repubblica Fiorentina, Palazzo Vecchio e la sua piazza rappresentano il cuore politico della città.",
+                audio: "audio/palazzo-vecchio.mp3"
             },
             {
                 title: "Ponte Vecchio",
                 category: "Punti Iconici",
-                description: "È il ponte in pietra più antico di Firenze (ricostruito nel 1345). Scampato alla Seconda Guerra Mondiale, ospita dal 1593 esclusivamente botteghe d'orefici per ordine del Granduca Ferdinando I."
+                description: "È il ponte in pietra più antico di Firenze, ricostruito nel 1345. Scampato alla Seconda Guerra Mondiale, ospita botteghe d'orefici.",
+                audio: "audio/ponte-vecchio.mp3"
             },
             {
                 title: "Basilica di Santa Croce",
                 category: "Chiese & Architettura",
-                description: "Fondata nel XIII secolo dai Francescani, è il mausoleo dei grandi d'Italia. Custodisce le tombe di Michelangelo, Galileo Galilei, Niccolò Machiavelli, Ugo Foscolo ed eccezionali affreschi di Giotto."
+                description: "Fondata nel XIII secolo dai Francescani, è il mausoleo dei grandi d'Italia, custodendo tombe di Michelangelo, Galileo e Machiavelli.",
+                audio: "audio/santa-croce.mp3"
             }
         ];
 
@@ -339,11 +348,25 @@
             filtered.forEach(h => {
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all";
+
+                const audioHtml = h.audio
+                    ? `
+                        <div class="mt-4 pt-3 border-t border-stone-200">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-800 mb-2">🎧 Guida audio</div>
+                            <audio controls preload="none" class="w-full">
+                                <source src="${h.audio}" type="audio/mpeg">
+                                Il tuo browser non supporta l'elemento audio.
+                            </audio>
+                        </div>
+                    `
+                    : '';
+
                 card.innerHTML = `
                     <div>
                         <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded mb-2 inline-block">${h.category}</span>
                         <h4 class="font-bold text-stone-900 text-base mb-2">${h.title}</h4>
                         <p class="text-stone-600 text-xs leading-relaxed">${h.description}</p>
+                        ${audioHtml}
                     </div>
                 `;
                 container.appendChild(card);
@@ -461,4 +484,3 @@
     </script>
 </body>
 </html>
-```
