@@ -60,28 +60,43 @@
             outline: 2px solid rgba(139, 38, 29, 0.25);
             outline-offset: 2px;
         }
-        .speech-btn {
+        .speech-btn,
+        .stop-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             padding: 0.65rem 0.9rem;
             border-radius: 0.75rem;
-            background: linear-gradient(135deg, #8B261D 0%, #A33A2C 100%);
-            color: white;
             font-size: 0.75rem;
             font-weight: 600;
             border: none;
             cursor: pointer;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .speech-btn {
+            background: linear-gradient(135deg, #8B261D 0%, #A33A2C 100%);
+            color: white;
             box-shadow: 0 6px 14px rgba(139, 38, 29, 0.18);
         }
-        .speech-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(139, 38, 29, 0.22);
+        .stop-btn {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            color: white;
+            box-shadow: 0 6px 14px rgba(55, 65, 81, 0.18);
         }
-        .speech-btn:active {
+        .speech-btn:hover,
+        .stop-btn:hover {
+            transform: translateY(-1px);
+        }
+        .speech-btn:active,
+        .stop-btn:active {
             transform: translateY(0);
+        }
+        .speech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -178,129 +193,9 @@
         </div>
     </footer>
 
+    <script src="./content/guide-data.js"></script>
     <script>
-        const daysData = [
-            {
-                day: 1,
-                date: "Sabato 5 Dicembre",
-                title: "Oltrarno, Giardini e Panorami",
-                subtitle: "Percorso alla scoperta della riva sinistra dell'Arno, tra natura, arte e viste mozzafiato.",
-                items: [
-                    "Giardino di Boboli (Forte di Belvedere, Obelisco egizio, Fontana del Forcone/Bacco, Porta San Giorgio, Fontana dell'Oceano)",
-                    "Palazzo Pitti",
-                    "Giardino Bardini",
-                    "Torre Belvedere",
-                    "Casa di Galileo Galilei",
-                    "Fontana di Sigrid"
-                ],
-                plus: [
-                    "Abbazia di San Miniato al Monte (splendida chiesa romanica arroccata)",
-                    "Villa Medicea del Poggio Imperiale"
-                ]
-            },
-            {
-                day: 2,
-                date: "Domenica 6 Dicembre",
-                title: "Il Cuore Religioso e l'Arte",
-                subtitle: "Immersione nei capolavori del Rinascimento e nei sapori fiorentini.",
-                items: [
-                    "Galleria dell'Accademia (David di Michelangelo)",
-                    "Museo Leonardo da Vinci",
-                    "Cattedrale di Santa Maria del Fiore",
-                    "Cupola del Brunelleschi",
-                    "Mercato Centrale di Firenze (Sosta pranzo e degustazioni)"
-                ],
-                plus: [
-                    "Spedale degli Innocenti (Piazza SS. Annunziata)",
-                    "Basilica di Santa Croce di Firenze"
-                ]
-            },
-            {
-                day: 3,
-                date: "Lunedì 7 Dicembre",
-                title: "Centro Politico, Ponti e Cultura",
-                subtitle: "Passeggiata nel cuore storico tra grandi musei, piazze simbolo e luoghi iconici.",
-                items: [
-                    "Galleria degli Uffizi",
-                    "Ponte Vecchio (Ponte Arno)",
-                    "Piazzale dei Giudici & Museo Galileo Galilei",
-                    "Piazza della Signoria (Palazzo Vecchio, Palazzo Gondi, Loggia dei Lanzi)",
-                    "Monumento ai Caduti della Battaglia",
-                    "Piazza della Repubblica",
-                    "Giunti Odeon (Cinema/Libreria)"
-                ],
-                plus: []
-            },
-            {
-                day: 4,
-                date: "Martedì 8 Dicembre",
-                title: "Giornata Conclusiva & Rientro",
-                subtitle: "Tempo libero dedicato a shopping, passeggiata libera e rientro.",
-                items: [
-                    "Passeggiata libera centro storico",
-                    "Shopping nelle vie del centro (Via de' Tornabuoni, Via Calzaiuoli)",
-                    "Rientro"
-                ],
-                plus: []
-            }
-        ];
-
-        const historyData = [
-            {
-                title: "Palazzo Pitti e Giardino di Boboli",
-                category: "Palazzi & Giardini",
-                description: "Costruito originariamente per il banchiere Luca Pitti nel 1458, il palazzo fu acquistato dai Medici nel 1549, diventando la residenza principale dei Granduchi di Toscana.",
-                audio: ""
-            },
-            {
-                title: "Forte di Belvedere e Giardino Bardini",
-                category: "Punti Panoramici",
-                description: "Progettato alla fine del '500 dal Buontalenti per volere del Granduca Ferdinando I, il Forte serviva a proteggere la città e dimostrare la potenza medicea.",
-                audio: ""
-            },
-            {
-                title: "Abbazia di San Miniato al Monte",
-                category: "Chiese & Architettura",
-                description: "Costruita tra l'XI e il XIII secolo, è una delle vette dell'architettura romanica fiorentina, dedicata al martire della città, San Miniato.",
-                audio: ""
-            },
-            {
-                title: "Galleria dell'Accademia",
-                category: "Arte & Musei",
-                description: "Fondata nel 1784, ospita dal 1873 il monumentale David di Michelangelo, trasferito da Piazza della Signoria.",
-                audio: ""
-            },
-            {
-                title: "Cattedrale di Santa Maria del Fiore & Cupola",
-                category: "Chiese & Architettura",
-                description: "Iniziata nel 1296 da Arnolfo di Cambio, la cattedrale venne completata nel 1436 con la Cupola autoportante di Filippo Brunelleschi.",
-                audio: ""
-            },
-            {
-                title: "Galleria degli Uffizi",
-                category: "Arte & Musei",
-                description: "Progettato nel 1560 da Giorgio Vasari come sede degli uffici amministrativi dello Stato mediceo, divenne in seguito una straordinaria galleria d'arte.",
-                audio: ""
-            },
-            {
-                title: "Piazza della Signoria & Palazzo Vecchio",
-                category: "Piazze & Palazzi",
-                description: "Costruito a partire dal 1299 come sede del Governo della Repubblica Fiorentina, Palazzo Vecchio e la sua piazza rappresentano il cuore politico della città.",
-                audio: ""
-            },
-            {
-                title: "Ponte Vecchio",
-                category: "Punti Iconici",
-                description: "È il ponte in pietra più antico di Firenze, ricostruito nel 1345. Scampato alla Seconda Guerra Mondiale, ospita botteghe d'orefici.",
-                audio: ""
-            },
-            {
-                title: "Basilica di Santa Croce",
-                category: "Chiese & Architettura",
-                description: "Fondata nel XIII secolo dai Francescani, è il mausoleo dei grandi d'Italia, custodendo tombe di Michelangelo, Galileo e Machiavelli.",
-                audio: ""
-            }
-        ];
+        const { daysData, historyData } = window.guideData;
 
         function speakMonument(title, description) {
             const synth = window.speechSynthesis;
@@ -318,6 +213,12 @@
             utterance.pitch = 1.0;
             utterance.volume = 1;
             synth.speak(utterance);
+        }
+
+        function stopMonument() {
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
         }
 
         function renderItinerary(filterDay = 'all') {
@@ -392,9 +293,14 @@
                     : `
                         <div class="audio-wrapper">
                             <div class="audio-label">🎧 Guida audio</div>
-                            <button class="speech-btn" type="button" onclick="speakMonument('${safeTitle}', '${safeDescription}')">
-                                🔊 Ascolta la descrizione
-                            </button>
+                            <div class="speech-row">
+                                <button class="speech-btn" type="button" onclick="speakMonument('${safeTitle}', '${safeDescription}')">
+                                    🔊 Ascolta la descrizione
+                                </button>
+                                <button class="stop-btn" type="button" onclick="stopMonument()">
+                                    ⏹️ Stop
+                                </button>
+                            </div>
                         </div>
                     `;
 
@@ -482,15 +388,15 @@
             const markdownContent = `# 🗺️ Programma di Viaggio: Firenze
 
 ## 📅 GIORNO 1: Sabato 5 Dicembre | Oltrarno e Panorami
-* **Punti principali:** Giardino di Boboli, Palazzo Pitti, Giardino Bardini, Torre Belvedere, Casa Galilei, Fontana di Sigrid.
-* **Plus:** Abbazia di San Miniato al Monte, Villa Medicea del Poggio Imperiale.
+* **Punti principali:** Palazzo Pitti e Giardino di Boboli, Forte di Belvedere e Torre di San Giorgio, Abbazia di San Miniato al Monte.
+* **Plus:** Villa Medicea del Poggio Imperiale, Fontana di Sigrid.
 
-## 📅 GIORNO 2: Domenica 6 Dicembre | Il Cuore Religioso e l'Arte
-* **Punti principali:** Galleria dell'Accademia, Museo Leonardo da Vinci, Cattedrale Santa Maria del Fiore & Cupola Brunelleschi, Mercato Centrale.
+## 📅 GIORNO 2: Domenica 6 Dicembre | Il Centro Religioso, i Musei e il Mercato
+* **Punti principali:** Cattedrale di Santa Maria del Fiore e la Cupola del Brunelleschi, Galleria dell'Accademia, Mercato Centrale.
 * **Plus:** Spedale degli Innocenti, Basilica di Santa Croce.
 
-## 📅 GIORNO 3: Lunedì 7 Dicembre | Centro Politico e Cultura
-* **Punti principali:** Galleria degli Uffizi, Ponte Vecchio, Museo Galileo, Piazza della Signoria (Palazzo Vecchio, Loggia dei Lanzi), Piazza della Repubblica, Giunti Odeon.
+## 📅 GIORNO 3: Lunedì 7 Dicembre | Il Centro Politico, i Ponti e la Storia della Scienza
+* **Punti principali:** Galleria degli Uffizi, Ponte Vecchio, Piazza della Signoria e Palazzo Vecchio, Piazza della Repubblica, Museo Galileo.
 
 ## 📅 GIORNO 4: Martedì 8 Dicembre
 * **Punti principali:** Giornata libera, shopping e rientro.
