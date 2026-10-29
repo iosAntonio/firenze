@@ -31,8 +31,18 @@
             color: #8B261D;
             font-weight: 600;
         }
+        .history-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .history-card-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
         .audio-wrapper {
-            margin-top: 1rem;
+            margin-top: auto;
             padding-top: 0.75rem;
             border-top: 1px solid #e7ddd1;
         }
@@ -97,6 +107,15 @@
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-top: 0.5rem;
+        }
+        .approfondimento-link {
+            color: #8B261D;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            word-break: break-word;
+        }
+        .approfondimento-link:hover {
+            color: #6e1d16;
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -167,7 +186,7 @@
         <section id="section-history" class="hidden space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
                 <div class="relative w-full md:w-96">
-                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900/20">
+                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900/20 focus:border-amber-900" />
                     <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
                 </div>
                 <div class="text-xs text-stone-500">Mostrati: <span id="history-count" class="font-bold text-stone-800">9</span> monumenti</div>
@@ -186,6 +205,44 @@
             </div>
         </section>
     </main>
+
+    <section class="max-w-6xl mx-auto px-4 pb-12 w-full">
+        <div class="bg-white border border-stone-200 rounded-2xl shadow-sm p-6 md:p-8">
+            <h3 class="text-2xl font-bold text-amber-950 mb-6">Approfondimento</h3>
+
+            <div class="grid gap-6 md:grid-cols-2">
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-stone-900">🎨 Musei Grandi e Gallerie</h4>
+                    <ul class="space-y-3 text-sm text-stone-700">
+                        <li><a class="approfondimento-link" href="https://www.uffizi.it/" target="_blank" rel="noopener noreferrer">Galleria degli Uffizi, Palazzo Pitti e Giardino di Boboli</a><br><span class="text-stone-500">https://www.uffizi.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.galleriaaccademiafirenze.it/" target="_blank" rel="noopener noreferrer">Galleria dell'Accademia di Firenze (David di Michelangelo)</a><br><span class="text-stone-500">https://www.galleriaaccademiafirenze.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.museogalileo.it/" target="_blank" rel="noopener noreferrer">Museo Galileo (Piazzale dei Giudici)</a><br><span class="text-stone-500">https://www.museogalileo.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.museoleonardodavincifirenze.com/" target="_blank" rel="noopener noreferrer">Museo Leonardo da Vinci</a><br><span class="text-stone-500">https://www.museoleonardodavincifirenze.com/</span></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-stone-900">⛪ Cattedrali, Chiese e Complessi Monumentali</h4>
+                    <ul class="space-y-3 text-sm text-stone-700">
+                        <li><a class="approfondimento-link" href="https://duomo.firenze.it/" target="_blank" rel="noopener noreferrer">Complesso del Duomo (Cattedrale, Cupola di Brunelleschi e Museo)</a><br><span class="text-stone-500">https://duomo.firenze.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.santacroceopera.it/" target="_blank" rel="noopener noreferrer">Basilica di Santa Croce</a><br><span class="text-stone-500">https://www.santacroceopera.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.institutoinnocenti.it/it/museo" target="_blank" rel="noopener noreferrer">Spedale degli Innocenti</a><br><span class="text-stone-500">https://www.institutoinnocenti.it/it/museo</span></li>
+                        <li><a class="approfondimento-link" href="https://www.sanminiatoalmonte.it/" target="_blank" rel="noopener noreferrer">Abbazia di San Miniato al Monte</a><br><span class="text-stone-500">https://www.sanminiatoalmonte.it/</span></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4 md:col-span-2">
+                    <h4 class="text-lg font-bold text-stone-900">🏛️ Piazze, Palazzi Storici e Punti di Interesse</h4>
+                    <ul class="space-y-3 text-sm text-stone-700">
+                        <li><a class="approfondimento-link" href="https://museicivicifiorentini.comune.fi.it/" target="_blank" rel="noopener noreferrer">Palazzo Vecchio e Musei Civici Fiorentini</a><br><span class="text-stone-500">https://museicivicifiorentini.comune.fi.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.mercatocentrale.it/firenze/" target="_blank" rel="noopener noreferrer">Mercato Centrale di Firenze</a><br><span class="text-stone-500">https://www.mercatocentrale.it/firenze/</span></li>
+                        <li><a class="approfondimento-link" href="https://www.villabardini.it/" target="_blank" rel="noopener noreferrer">Giardino Bardini</a><br><span class="text-stone-500">https://www.villabardini.it/</span></li>
+                        <li><a class="approfondimento-link" href="https://giuntiodeon.it/" target="_blank" rel="noopener noreferrer">Giunti Odeon (Cinema e Libreria)</a><br><span class="text-stone-500">https://giuntiodeon.it/</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer class="bg-stone-100 border-t border-stone-200 mt-12 py-6">
         <div class="max-w-6xl mx-auto px-4 text-center text-xs text-stone-500">
@@ -275,7 +332,7 @@
 
             filtered.forEach(h => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all";
+                card.className = "history-card bg-white p-5 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition-all";
 
                 const safeTitle = h.title.replace(/'/g, "\\'");
                 const safeDescription = h.description.replace(/'/g, "\\'");
@@ -305,7 +362,7 @@
                     `;
 
                 card.innerHTML = `
-                    <div>
+                    <div class="history-card-body">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded mb-2 inline-block">${h.category}</span>
                         <h4 class="font-bold text-stone-900 text-base mb-2">${h.title}</h4>
                         <p class="text-stone-600 text-xs leading-relaxed">${h.description}</p>
@@ -342,7 +399,10 @@
             document.querySelectorAll('.day-btn').forEach(btn => {
                 btn.className = "day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200";
             });
-            event.target.className = "day-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-900 text-white shadow-sm";
+            const activeBtn = document.querySelector('.day-btn[data-day="' + day + '"]');
+            if (activeBtn) {
+                activeBtn.className = "day-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-900 text-white shadow-sm";
+            }
             renderItinerary(day);
         }
 
