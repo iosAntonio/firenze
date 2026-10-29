@@ -1,0 +1,465 @@
+```html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firenze: Programma di Viaggio e Guida Storica</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #FDFBF7;
+            color: #2C3E50;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 320px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .active-tab {
+            border-bottom: 3px solid #8B261D;
+            color: #8B261D;
+            font-weight: 600;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1EFEA;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4C5B9;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8B261D;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Top Navigation / Header -->
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl">⚜️</span>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-amber-950">Firenze: Itinerario & Guida</h1>
+                    <p class="text-xs text-stone-500 uppercase tracking-wider font-semibold">5 - 8 Dicembre • 4 Giorni</p>
+                </div>
+            </div>
+            
+            <!-- Quick Export & Action Buttons -->
+            <div class="flex items-center space-x-3 w-full md:w-auto">
+                <button onclick="window.print()" class="flex-1 md:flex-none px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 border border-stone-300">
+                    <span>🖨️</span> Stampa / Salva PDF
+                </button>
+                <button onclick="downloadMarkdown()" class="flex-1 md:flex-none px-4 py-2 bg-amber-900 hover:bg-amber-950 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <span>📥</span> Scarica Testo (.md)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full space-y-10">
+
+        <!-- Intro Section -->
+        <section class="bg-amber-900/5 border border-amber-900/10 rounded-2xl p-6 md:p-8">
+            <h2 class="text-xl font-bold text-amber-950 mb-2">Benvenuto nel tuo programma interattivo</h2>
+            <p class="text-stone-700 leading-relaxed text-sm md:text-base">
+                Esplora l'itinerario giorno per giorno, scopri la storia e le curisità di ciascun monumento che visiterai, ed esporta il tuo programma in formato PDF o testo per averlo sempre con te durante il viaggio a Firenze.
+            </p>
+        </section>
+
+        <!-- Navigation Tabs -->
+        <div class="border-b border-stone-200">
+            <nav class="flex space-x-8" aria-label="Tabs">
+                <button onclick="switchTab('itinerary')" id="tab-itinerary" class="py-3 px-1 text-base font-medium active-tab focus:outline-none">
+                    📅 Programma per Giorni
+                </button>
+                <button onclick="switchTab('history')" id="tab-history" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">
+                    🏛️ Guida Storica Monumenti
+                </button>
+                <button onclick="switchTab('analytics')" id="tab-analytics" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">
+                    📊 Panoramica & Statistiche
+                </button>
+            </nav>
+        </div>
+
+        <!-- TAB 1: ITINERARIO GIORNO PER GIORNO -->
+        <section id="section-itinerary" class="space-y-6">
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterDay('all')" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-900 text-white shadow-sm" data-day="all">
+                    Tutti i Giorni
+                </button>
+                <button onclick="filterDay(1)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="1">
+                    Giorno 1 (5 Dic)
+                </button>
+                <button onclick="filterDay(2)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="2">
+                    Giorno 2 (6 Dic)
+                </button>
+                <button onclick="filterDay(3)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="3">
+                    Giorno 3 (7 Dic)
+                </button>
+                <button onclick="filterDay(4)" class="day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200" data-day="4">
+                    Giorno 4 (8 Dic)
+                </button>
+            </div>
+
+            <!-- Days Container -->
+            <div id="itinerary-cards-container" class="grid gap-6 md:grid-cols-2">
+                <!-- Cards inject dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 2: GUIDA STORICA -->
+        <section id="section-history" class="hidden space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
+                <div class="relative w-full md:w-96">
+                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900">
+                    <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
+                </div>
+                <div class="text-xs text-stone-500">
+                    Mostrati: <span id="history-count" class="font-bold text-stone-800">9</span> monumenti
+                </div>
+            </div>
+
+            <div id="history-cards-container" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <!-- History cards injected dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 3: ANALYTICS & BREAKDOWN -->
+        <section id="section-analytics" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
+                <h3 class="text-lg font-bold text-stone-900 mb-2">Ripartizione delle Visite per Categoria</h3>
+                <p class="text-stone-600 text-sm mb-6">Analisi qualitativa della tipologia di luoghi inclusi nel tuo itinerario fiorentino.</p>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-100 border-t border-stone-200 mt-12 py-6">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-stone-500">
+            <p>Itinerario di Viaggio • Firenze 2026 • Generato per la massima funzionalità in lettura e consultazione offline.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data Sources ---
+        const daysData = [
+            {
+                day: 1,
+                date: "Sabato 5 Dicembre",
+                title: "Oltrarno, Giardini e Panorami",
+                subtitle: "Percorso alla scoperta della riva sinistra dell'Arno, tra natura, arte e viste mozzafiato.",
+                items: [
+                    "Giardino di Boboli (Forte di Belvedere, Obelisco egizio, Fontana del Forcone/Bacco, Porta San Giorgio, Fontana dell'Oceano)",
+                    "Palazzo Pitti",
+                    "Giardino Bardini",
+                    "Torre Belvedere",
+                    "Casa di Galileo Galilei",
+                    "Fontana di Sigrid"
+                ],
+                plus: [
+                    "Abbazia di San Miniato al Monte (splendida chiesa romanica arroccata)",
+                    "Villa Medicea del Poggio Imperiale"
+                ]
+            },
+            {
+                day: 2,
+                date: "Domenica 6 Dicembre",
+                title: "Il Cuore Religioso e l'Arte",
+                subtitle: "Immersione nei capolavori del Rinascimento e nei sapori fiorentini.",
+                items: [
+                    "Galleria dell'Accademia (David di Michelangelo)",
+                    "Museo Leonardo da Vinci",
+                    "Cattedrale di Santa Maria del Fiore",
+                    "Cupola del Brunelleschi",
+                    "Mercato Centrale di Firenze (Sosta pranzo e degustazioni)"
+                ],
+                plus: [
+                    "Spedale degli Innocenti (Piazza SS. Annunziata)",
+                    "Basilica di Santa Croce di Firenze"
+                ]
+            },
+            {
+                day: 3,
+                date: "Lunedì 7 Dicembre",
+                title: "Centro Politico, Ponti e Cultura",
+                subtitle: "Passeggiata nel cuore storico tra grandi musei, piazze simbolo e luoghi iconici.",
+                items: [
+                    "Galleria degli Uffizi",
+                    "Ponte Vecchio (Ponte Arno)",
+                    "Piazzale dei Giudici & Museo Galileo Galilei",
+                    "Piazza della Signoria (Palazzo Vecchio, Palazzo Gondi, Loggia dei Lanzi)",
+                    "Monumento ai Caduti della Battaglia",
+                    "Piazza della Repubblica",
+                    "Giunti Odeon (Cinema/Libreria)"
+                ],
+                plus: []
+            },
+            {
+                day: 4,
+                date: "Martedì 8 Dicembre",
+                title: "Giornata Conclusiva & Rientro",
+                subtitle: "Tempo libero dedicato a shopping, passeggiata libera e rientro.",
+                items: [
+                    "Passeggiata libera centro storico",
+                    "Shopping nelle vie del centro (Via de' Tornabuoni, Via Calzaiuoli)",
+                    "Rientro"
+                ],
+                plus: []
+            }
+        ];
+
+        const historyData = [
+            {
+                title: "Palazzo Pitti e Giardino di Boboli",
+                category: "Palazzi & Giardini",
+                description: "Costruito originariamente per il banchiere Luca Pitti nel 1458, il palazzo fu acquistato dai Medici nel 1549, diventando la residenza principale dei Granduchi di Toscana. Il Giardino di Boboli è uno dei più celebri esempi di giardino all'italiana al mondo."
+            },
+            {
+                title: "Forte di Belvedere e Giardino Bardini",
+                category: "Punti Panoramici",
+                description: "Progettato alla fine del '500 dal Buontalenti per volere del Granduca Ferdinando I, il Forte serviva a proteggere la città e dimostrare la potenza medicea. Il vicino Giardino Bardini ne completa l'offerta con celebri scalinate e scorci unici."
+            },
+            {
+                title: "Abbazia di San Miniato al Monte",
+                category: "Chiese & Architettura",
+                description: "Costruita tra l'XI e il XIII secolo, è una delle vette dell'architettura romanica fiorentina, dedicata al primo martire della città, San Miniato. Offre uno dei panorami più spettacolari su Firenze."
+            },
+            {
+                title: "Galleria dell'Accademia",
+                category: "Arte & Musei",
+                description: "Fondata nel 1784 da Pietro Leopoldo di Lorena come luogo di studio per gli studenti d'arte, ospita dal 1873 il David originale di Michelangelo, trasferito da Piazza della Signoria per proteggerlo dalle intemperie."
+            },
+            {
+                title: "Cattedrale di Santa Maria del Fiore & Cupola",
+                category: "Chiese & Architettura",
+                description: "Iniziata nel 1296 da Arnolfo di Cambio, la cattedrale venne completata nel 1436 con la costruzione della monumentale Cupola autoportante di Filippo Brunelleschi, un'impresa ingegneristica rivoluzionaria."
+            },
+            {
+                title: "Galleria degli Uffizi",
+                category: "Arte & Musei",
+                description: "Progettato nel 1560 da Giorgio Vasari come sede degli 'uffici' amministrativi dello Stato mediceo, il complesso fu trasformato dai Medici in una straordinaria galleria d'arte privata, celebre in tutto il mondo."
+            },
+            {
+                title: "Piazza della Signoria & Palazzo Vecchio",
+                category: "Piazze & Palazzi",
+                description: "Costruito a partire dal 1299 come sede del Governo della Repubblica Fiorentina, Palazzo Vecchio e la sua piazza rappresentano il cuore politico della città, custodi di secoli di storia e di capolavori come il Perseo del Cellini."
+            },
+            {
+                title: "Ponte Vecchio",
+                category: "Punti Iconici",
+                description: "È il ponte in pietra più antico di Firenze (ricostruito nel 1345). Scampato alla Seconda Guerra Mondiale, ospita dal 1593 esclusivamente botteghe d'orefici per ordine del Granduca Ferdinando I."
+            },
+            {
+                title: "Basilica di Santa Croce",
+                category: "Chiese & Architettura",
+                description: "Fondata nel XIII secolo dai Francescani, è il mausoleo dei grandi d'Italia. Custodisce le tombe di Michelangelo, Galileo Galilei, Niccolò Machiavelli, Ugo Foscolo ed eccezionali affreschi di Giotto."
+            }
+        ];
+
+        // --- Render Functions ---
+        function renderItinerary(filterDay = 'all') {
+            const container = document.getElementById('itinerary-cards-container');
+            container.innerHTML = '';
+
+            const filteredDays = filterDay === 'all' 
+                ? daysData 
+                : daysData.filter(d => d.day === parseInt(filterDay));
+
+            filteredDays.forEach(day => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4 hover:border-amber-900/30 transition-all";
+                
+                let plusHtml = '';
+                if (day.plus && day.plus.length > 0) {
+                    plusHtml = `
+                        <div class="mt-4 pt-3 border-t border-stone-100 bg-stone-50 p-3 rounded-lg">
+                            <span class="text-xs font-bold text-amber-900 uppercase tracking-wider block mb-1">➕ Tappe Extra (Plus)</span>
+                            <ul class="text-xs text-stone-600 space-y-1 pl-4 list-disc">
+                                ${day.plus.map(p => `<li>${p}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-bold text-amber-900 bg-amber-900/10 px-2.5 py-1 rounded-full">GIORNO ${day.day}</span>
+                            <span class="text-xs font-medium text-stone-500">${day.date}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-stone-900">${day.title}</h3>
+                        <p class="text-xs text-stone-500 italic mb-4">${day.subtitle}</p>
+                        
+                        <ul class="text-sm text-stone-700 space-y-2 pl-4 list-disc">
+                            ${day.items.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    ${plusHtml}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderHistory(searchTerm = '') {
+            const container = document.getElementById('history-cards-container');
+            container.innerHTML = '';
+
+            const filtered = historyData.filter(h => 
+                h.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                h.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                h.category.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            document.getElementById('history-count').innerText = filtered.length;
+
+            filtered.forEach(h => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-all";
+                card.innerHTML = `
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded mb-2 inline-block">${h.category}</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-2">${h.title}</h4>
+                        <p class="text-stone-600 text-xs leading-relaxed">${h.description}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Tab Switching Logic ---
+        function switchTab(tab) {
+            document.getElementById('section-itinerary').classList.add('hidden');
+            document.getElementById('section-history').classList.add('hidden');
+            document.getElementById('section-analytics').classList.add('hidden');
+
+            document.getElementById('tab-itinerary').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
+            document.getElementById('tab-history').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
+            document.getElementById('tab-analytics').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
+
+            if (tab === 'itinerary') {
+                document.getElementById('section-itinerary').classList.remove('hidden');
+                document.getElementById('tab-itinerary').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
+            } else if (tab === 'history') {
+                document.getElementById('section-history').classList.remove('hidden');
+                document.getElementById('tab-history').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
+            } else if (tab === 'analytics') {
+                document.getElementById('section-analytics').classList.remove('hidden');
+                document.getElementById('tab-analytics').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
+                initChart();
+            }
+        }
+
+        // --- Day Filter ---
+        function filterDay(day) {
+            document.querySelectorAll('.day-btn').forEach(btn => {
+                btn.className = "day-btn px-4 py-2 rounded-full text-sm font-medium bg-stone-100 text-stone-700 hover:bg-stone-200";
+            });
+            event.target.className = "day-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-900 text-white shadow-sm";
+            renderItinerary(day);
+        }
+
+        function filterHistory() {
+            const val = document.getElementById('history-search').value;
+            renderHistory(val);
+        }
+
+        // --- Chart.js Analytics ---
+        let chartInitialized = false;
+        function initChart() {
+            if (chartInitialized) return;
+            chartInitialized = true;
+
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Arte & Musei', 'Chiese & Architettura', 'Palazzi & Giardini', 'Punti Panoramici & Iconici'],
+                    datasets: [{
+                        data: [4, 4, 3, 3],
+                        backgroundColor: [
+                            '#8B261D',
+                            '#D4A373',
+                            '#2A9D8F',
+                            '#E76F51'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 12 },
+                                color: '#2C3E50'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Markdown File Download ---
+        function downloadMarkdown() {
+            const markdownContent = `# 🗺️ Programma di Viaggio: Firenze
+
+## 📅 GIORNO 1: Sabato 5 Dicembre | Oltrarno e Panorami
+* **Punti principali:** Giardino di Boboli, Palazzo Pitti, Giardino Bardini, Torre Belvedere, Casa Galilei, Fontana di Sigrid.
+* **Plus:** Abbazia di San Miniato al Monte, Villa Medicea del Poggio Imperiale.
+
+## 📅 GIORNO 2: Domenica 6 Dicembre | Il Cuore Religioso e l'Arte
+* **Punti principali:** Galleria dell'Accademia, Museo Leonardo da Vinci, Cattedrale Santa Maria del Fiore & Cupola Brunelleschi, Mercato Centrale.
+* **Plus:** Spedale degli Innocenti, Basilica di Santa Croce.
+
+## 📅 GIORNO 3: Lunedì 7 Dicembre | Centro Politico e Cultura
+* **Punti principali:** Galleria degli Uffizi, Ponte Vecchio, Museo Galileo, Piazza della Signoria (Palazzo Vecchio, Loggia dei Lanzi), Piazza della Repubblica, Giunti Odeon.
+
+## 📅 GIORNO 4: Martedì 8 Dicembre
+* **Punti principali:** Giornata libera, shopping e rientro.
+`;
+            const blob = new Blob([markdownContent], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Programma_Firenze.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initial Initialization
+        renderItinerary();
+        renderHistory();
+    </script>
+</body>
+</html>
+```
