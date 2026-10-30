@@ -1,35 +1,23 @@
 window.mapSection = {
-  points: [
-    {
-      label: 'Punto 1',
-      title: 'Piazza del Duomo',
-      address: 'Duomo di Firenze, Firenze'
-    },
-    {
-      label: 'Punto 2',
-      title: 'Piazza della Signoria',
-      address: 'Piazza della Signoria, Firenze'
-    }
-  ]
+  mapEmbedUrl: 'https://www.google.com/maps/d/u/0/embed?mid=1YkshW4LC_Oj4-mUH6f7YYIbvUEYK6XM'
 };
 
 window.renderMapSection = function () {
   const container = document.getElementById('map-cards-container');
   if (!container) return;
 
-  container.innerHTML = window.mapSection.points.map((point) => `
-    <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-sm">
-      <p class="text-sm font-bold text-amber-900 mb-3">${point.label} — ${point.title}</p>
+  container.innerHTML = `
+    <div class="bg-white p-3 rounded-2xl border border-stone-200 shadow-sm md:col-span-2">
       <iframe
-        src="https://www.google.com/maps?q=${encodeURIComponent(point.address)}&output=embed"
+        src="${window.mapSection.mapEmbedUrl}"
         width="100%"
-        height="300"
+        height="520"
         class="w-full rounded-xl border-0 shadow-sm"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
-        title="Mappa di ${point.title}">
+        title="Mappa di Firenze">
       </iframe>
     </div>
-  `).join('');
+  `;
 };
