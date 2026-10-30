@@ -12,6 +12,17 @@
             color: #2C3E50;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
+        .tab-nav {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-btn {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
         .chart-container {
             position: relative;
             width: 100%;
@@ -163,12 +174,11 @@
             </p>
         </section>
 
-        <div class="border-b border-stone-200">
-            <nav class="flex space-x-8" aria-label="Tabs">
-                <button onclick="switchTab('itinerary')" id="tab-itinerary" class="py-3 px-1 text-base font-medium active-tab focus:outline-none">📅 Programma per Giorni</button>
-                <button onclick="switchTab('history')" id="tab-history" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">🏛️ Guida Storica Monumenti</button>
-                <button onclick="switchTab('map')" id="tab-map" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">📍 Mappa</button>
-                <button onclick="switchTab('analytics')" id="tab-analytics" class="py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">📊 Panoramica & Statistiche</button>
+        <div class="border-b border-stone-200 overflow-x-auto tab-nav">
+            <nav class="flex gap-2 md:gap-8 min-w-max md:min-w-0" aria-label="Tabs">
+                <button onclick="switchTab('itinerary')" id="tab-itinerary" class="tab-btn py-3 px-1 text-base font-medium active-tab focus:outline-none">📅 Programma per Giorni</button>
+                <button onclick="switchTab('history')" id="tab-history" class="tab-btn py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">🏛️ Guida Storica Monumenti</button>
+                <button onclick="switchTab('map')" id="tab-map" class="tab-btn py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none">📍 Mappa</button>
             </nav>
         </div>
 
@@ -187,7 +197,7 @@
         <section id="section-history" class="hidden space-y-6">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 rounded-xl border border-stone-200 shadow-sm">
                 <div class="relative w-full md:w-96">
-                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-900/20 focus:border-amber-900" />
+                    <input type="text" id="history-search" oninput="filterHistory()" placeholder="Cerca monumento o luogo..." class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm text-stone-700 focus:ring-2 focus:ring-amber-900/20 focus:border-amber-900 outline-none">
                     <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
                 </div>
                 <div class="text-xs text-stone-500">Mostrati: <span id="history-count" class="font-bold text-stone-800">9</span> monumenti</div>
@@ -203,16 +213,6 @@
                 <div id="map-cards-container" class="grid gap-6 md:grid-cols-2"></div>
             </div>
         </section>
-
-        <section id="section-analytics" class="hidden space-y-8">
-            <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-                <h3 class="text-lg font-bold text-stone-900 mb-2">Ripartizione delle Visite per Categoria</h3>
-                <p class="text-stone-600 text-sm mb-6">Analisi qualitativa della tipologia di luoghi inclusi nel tuo itinerario fiorentino.</p>
-                <div class="chart-container">
-                    <canvas id="categoryChart"></canvas>
-                </div>
-            </div>
-        </section>
     </main>
 
     <section class="max-w-6xl mx-auto px-4 pb-12 w-full">
@@ -223,30 +223,30 @@
                 <div class="space-y-4">
                     <h4 class="text-lg font-bold text-stone-900">🎨 Musei Grandi e Gallerie</h4>
                     <ul class="space-y-3 text-sm text-stone-700">
-                        <li><a class="approfondimento-link" href="https://www.uffizi.it/" target="_blank" rel="noopener noreferrer">Galleria degli Uffizi, Palazzo Pitti e Giardino di Boboli</a><br><span class="text-stone-500">Musei, arte rinascimentale e viste panoramiche.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.galleriaaccademiafirenze.it/" target="_blank" rel="noopener noreferrer">Galleria dell'Accademia di Firenze (David di Michelangelo)</a><br><span class="text-stone-500">Capolavoro del Rinascimento.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.museogalileo.it/" target="_blank" rel="noopener noreferrer">Museo Galileo (Piazzale dei Giudici)</a><br><span class="text-stone-500">Scienza, astronomia e strumenti storici.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.museoleonardodavincifirenze.com/" target="_blank" rel="noopener noreferrer">Museo Leonardo da Vinci</a><br><span class="text-stone-500">Modelli e invenzioni del genio fiorentino.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.uffizi.it/" target="_blank" rel="noopener noreferrer">Galleria degli Uffizi, Palazzo Pitti e Giardino di Boboli</a><br><span class="text-stone-500">Musei e arte rinascimentale tra i più importanti di Firenze.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.galleriaaccademiafirenze.it/" target="_blank" rel="noopener noreferrer">Galleria dell'Accademia di Firenze (David di Michelangelo)</a><br><span class="text-stone-500">Uno dei capolavori più famosi del mondo.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.museogalileo.it/" target="_blank" rel="noopener noreferrer">Museo Galileo (Piazzale dei Giudici)</a><br><span class="text-stone-500">Scienza, strumenti e osservazioni astronomiche.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.museoleonardodavincifirenze.com/" target="_blank" rel="noopener noreferrer">Museo Leonardo da Vinci</a><br><span class="text-stone-500">Incontri con i progetti e gli studi del genio toscano.</span></li>
                     </ul>
                 </div>
 
                 <div class="space-y-4">
                     <h4 class="text-lg font-bold text-stone-900">⛪ Cattedrali, Chiese e Complessi Monumentali</h4>
                     <ul class="space-y-3 text-sm text-stone-700">
-                        <li><a class="approfondimento-link" href="https://duomo.firenze.it/" target="_blank" rel="noopener noreferrer">Complesso del Duomo (Cattedrale, Cupola di Brunelleschi e Museo)</a><br><span class="text-stone-500">Simbolo della città e della sua maestria architettonica.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.santacroceopera.it/" target="_blank" rel="noopener noreferrer">Basilica di Santa Croce</a><br><span class="text-stone-500">Sepolcri illustri e arte gotica e rinascimentale.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.institutoinnocenti.it/it/museo" target="_blank" rel="noopener noreferrer">Spedale degli Innocenti</a><br><span class="text-stone-500">Un'icona dell'architettura moderna del Quattrocento.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.sanminiatoalmonte.it/" target="_blank" rel="noopener noreferrer">Abbazia di San Miniato al Monte</a><br><span class="text-stone-500">Panorama e arte romanica in posizione strategica.</span></li>
+                        <li><a class="approfondimento-link" href="https://duomo.firenze.it/" target="_blank" rel="noopener noreferrer">Complesso del Duomo (Cattedrale, Cupola di Brunelleschi e Museo del Duomo)</a><br><span class="text-stone-500">Simbolo iconico di Firenze e della sua arte religiosa.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.santacroceopera.it/" target="_blank" rel="noopener noreferrer">Basilica di Santa Croce</a><br><span class="text-stone-500">La chiesa dei grandi fiorentini e della cultura toscana.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.institutoinnocenti.it/it/museo" target="_blank" rel="noopener noreferrer">Spedale degli Innocenti</a><br><span class="text-stone-500">Un esempio di architettura rinascimentale e beneficenza.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.sanminiatoalmonte.it/" target="_blank" rel="noopener noreferrer">Abbazia di San Miniato al Monte</a><br><span class="text-stone-500">Uno dei punti più belli per osservare Firenze dall’alto.</span></li>
                     </ul>
                 </div>
 
                 <div class="space-y-4 md:col-span-2">
                     <h4 class="text-lg font-bold text-stone-900">🏛️ Piazze, Palazzi Storici e Punti di Interesse</h4>
                     <ul class="space-y-3 text-sm text-stone-700">
-                        <li><a class="approfondimento-link" href="https://museicivicifiorentini.comune.fi.it/" target="_blank" rel="noopener noreferrer">Palazzo Vecchio e Musei Civici Fiorentini</a><br><span class="text-stone-500">Il cuore politico della Firenze medievale.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.mercatocentrale.it/firenze/" target="_blank" rel="noopener noreferrer">Mercato Centrale di Firenze</a><br><span class="text-stone-500">Gusto, sapori e atmosfera locale.</span></li>
-                        <li><a class="approfondimento-link" href="https://www.villabardini.it/" target="_blank" rel="noopener noreferrer">Giardino Bardini</a><br><span class="text-stone-500">Viste mozzafiato sul paesaggio urbano.</span></li>
-                        <li><a class="approfondimento-link" href="https://giuntiodeon.it/" target="_blank" rel="noopener noreferrer">Giunti Odeon (Cinema e Libreria)</a><br><span class="text-stone-500">Un luogo di cultura, letteratura e passeggio.</span></li>
+                        <li><a class="approfondimento-link" href="https://museicivicifiorentini.comune.fi.it/" target="_blank" rel="noopener noreferrer">Palazzo Vecchio e Musei Civici Fiorentini</a><br><span class="text-stone-500">Il centro politico della città e il suo splendore medievale.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.mercatocentrale.it/firenze/" target="_blank" rel="noopener noreferrer">Mercato Centrale di Firenze</a><br><span class="text-stone-500">Uno spazio perfetto per assaporare il gusto della città.</span></li>
+                        <li><a class="approfondimento-link" href="https://www.villabardini.it/" target="_blank" rel="noopener noreferrer">Giardino Bardini</a><br><span class="text-stone-500">Vedi Firenze tra verde, statue e panorami incantevoli.</span></li>
+                        <li><a class="approfondimento-link" href="https://giuntiodeon.it/" target="_blank" rel="noopener noreferrer">Giunti Odeon (Cinema e Libreria)</a><br><span class="text-stone-500">Un luogo culturale molto amato dai visitatori.</span></li>
                     </ul>
                 </div>
             </div>
@@ -387,26 +387,20 @@
             document.getElementById('section-itinerary').classList.add('hidden');
             document.getElementById('section-history').classList.add('hidden');
             document.getElementById('section-map').classList.add('hidden');
-            document.getElementById('section-analytics').classList.add('hidden');
 
-            document.getElementById('tab-itinerary').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
-            document.getElementById('tab-history').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
-            document.getElementById('tab-map').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
-            document.getElementById('tab-analytics').className = "py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
+            document.getElementById('tab-itinerary').className = "tab-btn py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
+            document.getElementById('tab-history').className = "tab-btn py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
+            document.getElementById('tab-map').className = "tab-btn py-3 px-1 text-base font-medium text-stone-500 hover:text-stone-700 focus:outline-none";
 
             if (tab === 'itinerary') {
                 document.getElementById('section-itinerary').classList.remove('hidden');
-                document.getElementById('tab-itinerary').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
+                document.getElementById('tab-itinerary').className = "tab-btn py-3 px-1 text-base font-medium active-tab focus:outline-none";
             } else if (tab === 'history') {
                 document.getElementById('section-history').classList.remove('hidden');
-                document.getElementById('tab-history').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
+                document.getElementById('tab-history').className = "tab-btn py-3 px-1 text-base font-medium active-tab focus:outline-none";
             } else if (tab === 'map') {
                 document.getElementById('section-map').classList.remove('hidden');
-                document.getElementById('tab-map').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
-            } else if (tab === 'analytics') {
-                document.getElementById('section-analytics').classList.remove('hidden');
-                document.getElementById('tab-analytics').className = "py-3 px-1 text-base font-medium active-tab focus:outline-none";
-                initChart();
+                document.getElementById('tab-map').className = "tab-btn py-3 px-1 text-base font-medium active-tab focus:outline-none";
             }
         }
 
@@ -424,39 +418,6 @@
         function filterHistory() {
             const val = document.getElementById('history-search').value;
             renderHistory(val);
-        }
-
-        let chartInitialized = false;
-        function initChart() {
-            if (chartInitialized) return;
-            chartInitialized = true;
-
-            const ctx = document.getElementById('categoryChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Arte & Musei', 'Chiese & Architettura', 'Palazzi & Giardini', 'Punti Panoramici & Iconici'],
-                    datasets: [{
-                        data: [4, 4, 3, 3],
-                        backgroundColor: ['#8B261D', '#D4A373', '#2A9D8F', '#E76F51'],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                font: { size: 12 },
-                                color: '#2C3E50'
-                            }
-                        }
-                    }
-                }
-            });
         }
 
         function downloadMarkdown() {
