@@ -1,5 +1,5 @@
 window.mapSection = {
-  mapEmbedUrl: 'https://www.google.com/maps/d/u/0/embed?mid=1YkshW4LC_Oj4-mUH6f7YYIbvUEYK6XM'
+  mapEmbedUrl: 'https://www.google.com/maps/d/u/0/embed?mid=1YkshW4LC_Oj4-mUH6f7YYIbvUEYK6XM&ehbc=2E312F'
 };
 
 window.renderMapSection = function () {
